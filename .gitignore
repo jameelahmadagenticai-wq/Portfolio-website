@@ -1,0 +1,58 @@
+# Dependencies
+node_modules/
+/.pnp
+.pnp.js
+
+# Production Build Outputs
+dist/
+dist-ssr/
+build/
+out/
+
+# Netlify Build and CLI Cache
+.netlify/
+
+# Local Environment Variables & Secrets
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.env
+*.env.*
+!.env.example
+
+# Logs and Debug Output
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor & IDE Configs
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.sublime-project
+*.sublime-workspace
+
+# Operating System Files
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# Testing & Coverage
+coverage/
+.nyc_output/
+
+# Temporary / Cache Files
+.cache/
+*.tsbuildinfo
