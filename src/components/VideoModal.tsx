@@ -1,0 +1,132 @@
+import React, { useEffect, useRef } from 'react';
+import { X, Play, Volume2, Sparkles, Download, Film } from 'lucide-react';
+import { PROFILE_DATA } from '../data/profile';
+
+interface VideoModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  videoSrc?: string;
+}
+
+export const VideoModal: React.FC<VideoModalProps> = ({
+  isOpen,
+  onClose,
+  videoSrc = '/intro.mp4'
+}) => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  // Close on Escape key & manage video playback
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    if (isOpen) {
+      window.addEventListener('keydown', handleKeyDown);
+      // Automatically attempt to play video when opened
+      if (videoRef.current) {
+        videoRef.current.currentTime = 0;
+        videoRef.current.play().catch(() => {
+          // Autoplay policy might require user gesture or mute
+        });
+      }
+    } else {
+      if (videoRef.current) {
+        videoRef.current.pause();
+      }
+    }
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isOpen, onClose]);
+
+  if (!isOpen) return null;
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-950/85 backdrop-blur-md animate-in fade-in duration-200"
+      onClick={() => {
+        if (videoRef.current) videoRef.current.pause();
+        onClose();
+      }}
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl w-full max-w-4xl shadow-2xl overflow-hidden flex flex-col text-slate-900 dark:text-slate-100"
+      >
+        {/* Modal Header */}
+        <div className="px-5 py-4 bg-slate-50 dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between gap-4 shrink-0">
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400">
+              <Film className="w-5 h-5" />
+            </div>
+            <div>
+              <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <span>Personal Introduction</span>
+                <span className="inline-flex items-center gap-1 text-[11px] font-mono font-medium px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800">
+                  <Sparkles className="w-3 h-3" />
+                  <span>HD Video</span>
+                </span>
+              </h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400 font-mono">
+                {PROFILE_DATA.name} • AI Engineer @ Sysvoy
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <a
+              href={videoSrc}
+              download="Jameel_Ahmad_Intro.mp4"
+              className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors shadow-xs"
+              title="Download Intro Video"
+            >
+              <Download className="w-3.5 h-3.5" />
+              <span>Download</span>
+            </a>
+
+            <button
+              onClick={() => {
+                if (videoRef.current) videoRef.current.pause();
+                onClose();
+              }}
+              className="p-2 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+              title="Close (Esc)"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+        </div>
+
+        {/* Video Player Container */}
+        <div className="relative bg-black flex items-center justify-center aspect-video w-full max-h-[72vh] overflow-hidden">
+          <video
+            ref={videoRef}
+            src={videoSrc}
+            controls
+            playsInline
+            className="w-full h-full object-contain"
+            preload="metadata"
+          >
+            Your browser does not support the video tag.
+          </video>
+        </div>
+
+        {/* Modal Footer Info */}
+        <div className="px-5 py-3 bg-slate-50 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-500 dark:text-slate-400 font-mono">
+          <div className="flex items-center gap-1.5 text-indigo-600 dark:text-indigo-400 font-semibold">
+            <Sparkles className="w-3.5 h-3.5 shrink-0" />
+            <span>This video is generated by AI with my own voice.</span>
+          </div>
+          <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400">
+            <Volume2 className="w-4 h-4 text-indigo-500" />
+            <span>Click play/unmute for sound • Press Esc to close</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};

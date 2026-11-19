@@ -13,6 +13,7 @@ import { ArchitectureModal } from './components/ArchitectureModal';
 import { AdminModal } from './components/AdminModal';
 import { AdminBar } from './components/AdminBar';
 import { ResumeModal } from './components/ResumeModal';
+import { VideoModal } from './components/VideoModal';
 import { Project } from './types';
 import { PROJECTS_DATA } from './data/projects';
 
@@ -33,6 +34,7 @@ export default function App() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [adminModalOpen, setAdminModalOpen] = useState(false);
   const [resumeModalOpen, setResumeModalOpen] = useState(false);
+  const [videoModalOpen, setVideoModalOpen] = useState(false);
 
   const handleSelectProjectById = (projectId: string) => {
     const found = PROJECTS_DATA.find((p) => p.id === projectId);
@@ -56,6 +58,7 @@ export default function App() {
         <Hero
           customData={customData}
           onOpenResume={() => setResumeModalOpen(true)}
+          onOpenVideo={() => setVideoModalOpen(true)}
         />
         <About customData={customData} />
         <Skills />
@@ -73,6 +76,13 @@ export default function App() {
         onClose={() => setResumeModalOpen(false)}
         resumeUrl={customData.resumeUrl}
         resumeFileName={customData.resumeFileName}
+      />
+
+      {/* Intro Video Player Modal */}
+      <VideoModal
+        isOpen={videoModalOpen}
+        onClose={() => setVideoModalOpen(false)}
+        videoSrc="/intro.mp4"
       />
 
       {/* Interactive Architecture Flow Modal */}

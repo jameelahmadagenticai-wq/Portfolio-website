@@ -11,7 +11,8 @@ import {
   ExternalLink,
   ShieldCheck,
   Sparkles,
-  FileText
+  FileText,
+  Play
 } from 'lucide-react';
 import { PROFILE_DATA } from '../data/profile';
 import { TERMINAL_SNIPPETS } from '../data/terminalSnippets';
@@ -20,9 +21,10 @@ import { AdminCustomData } from '../hooks/useAdmin';
 interface HeroProps {
   customData: AdminCustomData;
   onOpenResume: () => void;
+  onOpenVideo?: () => void;
 }
 
-export const Hero: React.FC<HeroProps> = ({ customData, onOpenResume }) => {
+export const Hero: React.FC<HeroProps> = ({ customData, onOpenResume, onOpenVideo }) => {
   const titles = customData.titles && customData.titles.length > 0 ? customData.titles : PROFILE_DATA.titles;
   const [titleIndex, setTitleIndex] = useState(0);
   const [displayText, setDisplayText] = useState('');
@@ -165,6 +167,17 @@ export const Hero: React.FC<HeroProps> = ({ customData, onOpenResume }) => {
                 <ArrowRight className="w-4 h-4" />
               </a>
 
+              {onOpenVideo && (
+                <button
+                  type="button"
+                  onClick={onOpenVideo}
+                  className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl font-semibold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/60 hover:bg-indigo-100 dark:hover:bg-indigo-900/60 border border-indigo-200 dark:border-indigo-800 shadow-xs transition-all hover:scale-[1.02] cursor-pointer"
+                >
+                  <Play className="w-4 h-4 fill-indigo-600 dark:fill-indigo-400" />
+                  <span>Watch Intro</span>
+                </button>
+              )}
+
               <button
                 type="button"
                 onClick={onOpenResume}
@@ -176,7 +189,7 @@ export const Hero: React.FC<HeroProps> = ({ customData, onOpenResume }) => {
 
               <a
                 href="#contact"
-                className="inline-flex items-center justify-center px-5 py-3 rounded-xl font-semibold text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-900/60 transition-all"
+                className="inline-flex items-center justify-center px-5 py-3 rounded-xl font-semibold text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 border border-slate-200 dark:border-slate-800 transition-all"
               >
                 Contact Me
               </a>
